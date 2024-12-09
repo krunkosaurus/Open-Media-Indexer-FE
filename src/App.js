@@ -82,6 +82,25 @@ function App() {
 
   return (
     <div className="wrapper">
+      {/* "Fork me on GitHub" Ribbon */}
+      <a
+        href="https://github.com/krunkosaurus/Open-Media-Indexer-FE"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            border: 0,
+            zIndex: 1000
+          }}
+          src="https://github.blog/wp-content/uploads/2008/12/forkme_right_green_007200.png"
+          alt="Fork me on GitHub"
+        />
+      </a>
+
       <header>
         <h1>Media Indexer</h1>
         <div>
