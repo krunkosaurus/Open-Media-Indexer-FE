@@ -17,8 +17,7 @@ function App() {
     // Create the parse worker on mount
     const worker = new Worker(new URL('./parseWorker.js', import.meta.url), { type: 'module' });
     worker.onmessage = (e) => {
-      // No changes needed here for initial worker creation
-      setData(e.data); // Initially might set something if needed
+      setData(e.data);
     };
     window.parseWorker = worker;
     return () => {
@@ -30,25 +29,23 @@ function App() {
     const file = e.target.files[0];
     if (!file) return;
 
-    const worker = window.parseWorker; // assume already created
+    const worker = window.parseWorker;
     worker.onmessage = (evt) => {
       if (evt.data.type === 'progress') {
-        // Keep old comment:
-        // Update UI: e.g. "Processing: X out of Y" or a fraction.
         const { processed, total } = evt.data;
         console.log(`Processed ${processed}${total ? '/' + total : ''} items`);
       } else if (evt.data.type === 'done') {
-        // data fully loaded
-        const decodedData = evt.data.data[0]; // select the single decoded object
+        const decodedData = evt.data.data[0];
         setData(decodedData);
         setLoading(false);
 
-        // New logic to set the default selectedYear to the last available year
         const items = decodedData.items || [];
-        const years = [...new Set(items.map(item => {
-          const y = new Date(item.datetime_utc).getFullYear();
-          return isNaN(y) ? null : y;
-        }).filter(y => y !== null))].sort((a, b) => a - b);
+        const years = [...new Set(
+          items.map(item => {
+            const y = new Date(item.datetime_utc).getFullYear();
+            return isNaN(y) ? null : y;
+          }).filter(y => y !== null)
+        )].sort((a, b) => a - b);
 
         if (years.length > 0) {
           setSelectedYear(years[years.length - 1]);
@@ -57,7 +54,6 @@ function App() {
     };
 
     setLoading(true);
-    // Read file in chunks
     const chunkSize = 1024 * 1024; // 1MB per chunk
     let offset = 0;
 
@@ -67,17 +63,14 @@ function App() {
       reader.onload = (evt) => {
         const arrayBuffer = evt.target.result;
         if (arrayBuffer.byteLength > 0) {
-          // Send chunk to worker
           worker.postMessage({ type: 'chunk', chunk: arrayBuffer });
           offset += chunkSize;
           if (offset < file.size) {
             readChunk();
           } else {
-            // Signal no more data
             worker.postMessage({ type: 'done' });
           }
         } else {
-          // End of file
           worker.postMessage({ type: 'done' });
         }
       };
@@ -97,12 +90,22 @@ function App() {
           {loading && <span style={{ marginLeft: '10px' }}>Loading...</span>}
         </div>
       </header>
+
       <div className="main-content">
         <div className="map-container">
           <MapView selectedYear={selectedYear} selectedMonth={selectedMonth} globalMode={globalMode} />
         </div>
         <div className="side-panel">
           <ChartsView selectedYear={selectedYear} selectedMonth={selectedMonth}/>
+        </div>
+      </div>
+
+      {/* Footer now contains Timeline on the left and TimeNavigator on the right */}
+      <div className="footer">
+        <div className="footer-left">
+          <Timeline selectedYear={selectedYear} setSelectedYear={setSelectedYear} />
+        </div>
+        <div className="footer-right">
           <TimeNavigator
             selectedYear={selectedYear}
             selectedMonth={selectedMonth}
@@ -112,9 +115,6 @@ function App() {
             onGlobalModeChange={setGlobalMode}
           />
         </div>
-      </div>
-      <div className="footer">
-        <Timeline selectedYear={selectedYear} setSelectedYear={setSelectedYear} />
       </div>
     </div>
   );

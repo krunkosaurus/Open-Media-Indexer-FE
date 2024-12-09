@@ -15,7 +15,7 @@ temp_file=$(mktemp)
 # Find all files in the ./src directory recursively and output their paths
 # Also concatenate their contents into the temporary file
 echo "Listing and concatenating files in ./src:"
-find ./src -type f \( -name "*.ts" -o -name "*.js" \) -print -exec cat {} >> "$temp_file" \;
+find ./src -type f \( -name "*.css" -o -name "*.js" \) -print -exec cat {} >> "$temp_file" \;
 
 # Copy the concatenated content to the clipboard
 cat "$temp_file" | pbcopy
