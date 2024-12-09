@@ -6,6 +6,8 @@
 
 An example is hosted at https://openmediaindexer.org/
 
+**NOTE:** To use this frontend webapp you must generate a `.msgpack` file from your folder of photos and videos using the [backend repo](https://github.com/krunkosaurus/Open-Media-Indexer-BE). This compressed file contains all the timestamps and GPS metadata of your media for you to visualize.
+
 ---
 
 ## Features
