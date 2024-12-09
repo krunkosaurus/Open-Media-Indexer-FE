@@ -1,3 +1,4 @@
+// src/TimeNavigator.js
 import React, { useState, useEffect } from 'react';
 
 function TimeNavigator({ selectedYear, selectedMonth, onChangeYear, onChangeMonth, globalMode, onGlobalModeChange }) {
@@ -36,7 +37,7 @@ function TimeNavigator({ selectedYear, selectedMonth, onChangeYear, onChangeMont
 
   let displayMonthStr = '--';
   if (selectedMonth != null) {
-    const monthIndex = selectedMonth; 
+    const monthIndex = selectedMonth;
     const monthName = new Date(2021, monthIndex).toLocaleString('default', { month: 'long' });
     const monthNumber = String(monthIndex + 1).padStart(2, '0');
     displayMonthStr = `${monthName} (Month ${monthNumber})`;
@@ -63,7 +64,7 @@ function TimeNavigator({ selectedYear, selectedMonth, onChangeYear, onChangeMont
             onChange={() => onGlobalModeChange(!globalMode)}
             style={{ marginRight: '5px', verticalAlign: 'middle' }}
           />
-          Global Mode
+          Pin Global View
         </label>
       </div>
     </div>

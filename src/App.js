@@ -39,11 +39,20 @@ function App() {
         console.log(`Processed ${processed}${total ? '/' + total : ''} items`);
       } else if (evt.data.type === 'done') {
         // data fully loaded
-        // evt.data.data is now an array with a single object: [ { locations: [...], items: [...] } ]
-        // We take the first element to get our normalized data object
-        const decodedData = evt.data.data[0]; // new line: select the single decoded object
+        const decodedData = evt.data.data[0]; // select the single decoded object
         setData(decodedData);
         setLoading(false);
+
+        // New logic to set the default selectedYear to the last available year
+        const items = decodedData.items || [];
+        const years = [...new Set(items.map(item => {
+          const y = new Date(item.datetime_utc).getFullYear();
+          return isNaN(y) ? null : y;
+        }).filter(y => y !== null))].sort((a, b) => a - b);
+
+        if (years.length > 0) {
+          setSelectedYear(years[years.length - 1]);
+        }
       }
     };
 
@@ -90,11 +99,9 @@ function App() {
       </header>
       <div className="main-content">
         <div className="map-container">
-          {/* MapView now expects data.items and data.locations. */}
           <MapView selectedYear={selectedYear} selectedMonth={selectedMonth} globalMode={globalMode} />
         </div>
         <div className="side-panel">
-          {/* ChartsView expects items and retrieves city info from locations */}
           <ChartsView selectedYear={selectedYear} selectedMonth={selectedMonth}/>
           <TimeNavigator
             selectedYear={selectedYear}
@@ -107,7 +114,6 @@ function App() {
         </div>
       </div>
       <div className="footer">
-        {/* Timeline also expects items (through data) */}
         <Timeline selectedYear={selectedYear} setSelectedYear={setSelectedYear} />
       </div>
     </div>

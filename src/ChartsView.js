@@ -27,7 +27,6 @@ function ChartsView({ selectedYear, selectedMonth }) {
   const items = data.items || [];
   const locations = data.locations || [];
 
-  // Keep old comment:
   // Filter items by selectedYear/selectedMonth
   const filteredData = useMemo(() => {
     return items.filter(item => {
@@ -42,7 +41,7 @@ function ChartsView({ selectedYear, selectedMonth }) {
   const cityCount = useMemo(() => {
     const count = {};
     filteredData.forEach(item => {
-      const loc = locations[item.location_id]; // new line: retrieve location
+      const loc = locations[item.location_id];
       if (loc && loc.city) {
         count[loc.city] = (count[loc.city] || 0) + 1;
       }
@@ -80,8 +79,8 @@ function ChartsView({ selectedYear, selectedMonth }) {
         <div>No city data available.</div>
       )}
       <div style={{ marginTop: '15px', color: '#ccc' }}>
-        <p>Photos Indexed: {photoCount}</p>
-        <p>Videos Indexed: {videoCount}</p>
+        <p>Photos Indexed: {photoCount.toLocaleString()}</p>
+        <p>Videos Indexed: {videoCount.toLocaleString()}</p>
       </div>
     </div>
   );
