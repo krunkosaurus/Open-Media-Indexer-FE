@@ -1,7 +1,10 @@
 
 # Open Media Indexer FE
+![Open Media Indexer UI](assets/media-indexer-ui.png)
 
-**Open Media Indexer FE** is a React-based front-end application for visualizing and interacting with media metadata (photos, videos, and locations). It provides an intuitive UI for exploring media collections across time and geography.
+**Open Media Indexer FE** is a React-based front-end application for visualizing and interacting with media metadata (photos, videos, and locations). It provides an intuitive UI for exploring media collections across time and geography. It's open source, can be run locally and contains no trackers, ads, or 3rd party services outside of using OpenStreetMap for visuals.
+
+An example is hosted at https://openmediaindexer.org/
 
 ---
 
@@ -43,6 +46,8 @@ Make sure you have the following installed on your system:
    ```
 
    The application will be available at `http://localhost:3000`.
+
+Or run `npm run build` to create a static webapp in the `./build` folder.
 
 ---
 
